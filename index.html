@@ -196,6 +196,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
         }
         .btn svg { width: 14px; height: 14px; fill: currentColor; }
@@ -236,6 +237,63 @@
             white-space: pre-wrap;
             margin: 0; 
             border: 1px solid var(--border-color);
+        }
+        .loading-text { color: var(--text-muted); font-style: italic; }
+
+        /* ========================================= */
+        /* استجابة الجوال (Mobile Responsiveness)    */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+            .logo-area h1 {
+                font-size: 18px; /* تصغير الخط قليلاً */
+            }
+            .logo-image {
+                height: 40px; /* تصغير اللوقو ليناسب الشاشة */
+            }
+            .theme-toggle {
+                width: 35px;
+                height: 35px;
+                margin-right: 10px;
+            }
+            main {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            .skill-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .skill-title-group {
+                width: 100%;
+            }
+            .skill-actions {
+                width: 100%;
+                flex-wrap: wrap; /* السماح بالتفاف الأزرار */
+                justify-content: flex-start;
+            }
+            /* جعل الأزرار تتمدد وتأخذ مساحة لتسهيل الضغط بالجوال */
+            .btn {
+                flex: 1 1 30%; 
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+            .github-stats {
+                flex: 1 1 100%;
+                justify-content: center;
+                margin-bottom: 5px;
+                padding: 8px;
+            }
+            .search-bar {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            pre {
+                font-size: 12px; /* تصغير حجم خط الكود قليلاً ليكون مقروء أكثر */
+            }
         }
     </style>
 </head>
@@ -910,3 +968,4 @@
     </script>
 </body>
 </html>
+,path:ui-ux-pro-max/index.html,skill_name:user:ui-ux-pro-max}
