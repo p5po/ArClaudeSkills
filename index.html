@@ -155,6 +155,7 @@
         <div class="logo-area">
             <h1>ArClaudeSkills</h1>
         </div>
+        <!-- تم التأكد من اسم الصورة logo.png -->
         <img src="logo.png" alt="Abdullah Avatar" class="avatar">
     </header>
 
@@ -168,14 +169,13 @@
 
     <script>
         // ==========================================
-        // إضافة المهارات (أضف المهارات الجديدة هنا وضع عدد النجوم الحقيقي)
+        // إضافة المهارات (النظام سيسحب عدد النجوم تلقائياً من الرابط)
         // ==========================================
         const skillsData = [
             {
                 title: "نموذج القوائم المالية الثلاث (3-Statement Model)",
                 author: "بواسطة Anthropic",
                 description: "إكمال وتعبئة نماذج مالية من 3 قوائم مع الربط الكامل.",
-                stars: "6", // رقم اللايكات (النجوم) الفعلي
                 githubUrl: "https://github.com/anthropics/financial-services",
                 filename: "3-statement-model.md",
                 codeContent: `إكمال نموذج مالي من 3 قوائم
@@ -183,18 +183,17 @@
 
 ⚠️ مبادئ حرجة — اقرأ قبل تعبئة أي نموذج
 بيئة العمل — Office JS مقابل Python:
-- إذا كنت تعمل داخل Excel (إضافة Office / Office JS): استخدم Office JS مباشرة. اكتب المعادلات عبر range.formulas = [["=D14*(1+Assumptions!$B$5)"]] — لا تستخدم أبدًا range.values للخلايا المستنتجة. لا توجد إعادة حساب منفصلة؛ Excel يحسبها محليًا.
-- إذا كنت تنشئ ملف .xlsx مستقل: استخدم Python/openpyxl. اكتب نصوص المعادلات (ws["D15"] = "=D14*(1+Assumptions!$B$5)")، ثم قم بتشغيل recalc.py قبل التسليم.
+- إذا كنت تعمل داخل Excel (إضافة Office / Office JS): استخدم Office JS مباشرة.
+- إذا كنت تنشئ ملف .xlsx مستقل: استخدم Python/openpyxl.
 
 المعادلات على القيم الثابتة (غير قابلة للنقاش):
-- كل خلية توقعات، أو ترحيل، أو ربط، أو إجمالي فرعي يجب أن تكون معادلة Excel — أبدًا لا تكون قيمة محسوبة مسبقًا.
-- الخلايا الوحيدة التي يجب أن تحتوي على أرقام ثابتة هي: (1) البيانات التاريخية الفعلية، (2) مدخلات الافتراضات في ورقة الافتراضات.
+- كل خلية توقعات يجب أن تكون معادلة Excel.
 
 تحقق خطوة بخطوة مع المستخدم:
 1. بعد مطابقة القالب ← اعرض للمستخدم الأوراق وأكدها قبل التعديل.
 2. بعد تعبئة البيانات التاريخية ← اعرض الكتلة التاريخية وأكد تطابقها.
 3. بعد بناء توقعات الدخل ← شغل فحوصات الإجماليات الفرعية.
-4. بعد بناء الميزانية ← اعرض فحص التوازن (الأصول = الخصوم + حقوق الملكية).
+4. بعد بناء الميزانية ← اعرض فحص التوازن.
 5. بعد بناء التدفقات النقدية ← اعرض مطابقة النقد.`
             }
         ];
@@ -215,9 +214,10 @@
                         <div class="skill-actions">
                             <div class="github-stats" title="عدد النجوم في قيت هب">
                                 <svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path></svg>
-                                <span>${skill.stars}</span>
+                                <span id="stars-count-${index}">...</span>
                             </div>
                             
+                            <!-- ينسخ رابط القيت هب المباشر -->
                             <button class="btn btn-copy" onclick="event.stopPropagation(); copyGithubLink(this, '${skill.githubUrl}')">نسخ الرابط</button>
                             <button class="btn btn-download" onclick="event.stopPropagation(); downloadContent(${index})">تحميل</button>
                             <a href="${skill.githubUrl}" target="_blank" class="btn btn-github" onclick="event.stopPropagation();">
@@ -235,6 +235,33 @@
             `).join('');
 
             attachCardListeners();
+            fetchGitHubStars();
+        }
+
+        // سحب عدد النجوم برمجياً من قيت هب
+        function fetchGitHubStars() {
+            skillsData.forEach((skill, index) => {
+                const match = skill.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+                if (match) {
+                    const owner = match[1];
+                    const repo = match[2];
+                    fetch(`https://api.github.com/repos/${owner}/${repo}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.stargazers_count !== undefined) {
+                                let stars = data.stargazers_count;
+                                if (stars >= 1000) {
+                                    stars = (stars / 1000).toFixed(1) + 'k';
+                                }
+                                document.getElementById(`stars-count-${index}`).innerText = stars;
+                            }
+                        })
+                        .catch(err => {
+                            console.error('خطأ في جلب بيانات قيت هب:', err);
+                            document.getElementById(`stars-count-${index}`).innerText = "N/A";
+                        });
+                }
+            });
         }
 
         function attachCardListeners() {
