@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كلاود كود - مهارات سريعة</title>
+    <title>ArClaudeSkills</title>
     <style>
         :root {
             --primary: #C15F3C;
@@ -31,8 +31,7 @@
             border-bottom: 3px solid var(--border-color);
         }
         .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-area img { width: 50px; height: 50px; image-rendering: pixelated; }
-        .logo-area h1 { margin: 0; color: var(--primary); font-size: 24px; }
+        .logo-area h1 { margin: 0; color: var(--primary); font-size: 26px; }
         .avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--border-color); object-fit: cover; background-color: white;}
 
         main { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
@@ -154,10 +153,8 @@
 
     <header>
         <div class="logo-area">
-            <img src="image_de347a.png" alt="Cloud Icon">
-            <h1>كلاود كود</h1>
+            <h1>ArClaudeSkills</h1>
         </div>
-        <!-- تم ربط صورتك المبكسلة المرفقة هنا -->
         <img src="logo.png" alt="Abdullah Avatar" class="avatar">
     </header>
 
@@ -166,20 +163,19 @@
             <input type="text" class="search-bar" id="searchInput" placeholder="ابحث عن مهارة...">
         </div>
 
-        <!-- الحاوية التي سيتم إضافة المهارات داخلها برمجياً -->
         <div class="skills-grid" id="skillsGrid"></div>
     </main>
 
     <script>
         // ==========================================
-        // 🚀 منطقة إضافة المهارات (أضف المهارات الجديدة هنا)
+        // إضافة المهارات (أضف المهارات الجديدة هنا وضع عدد النجوم الحقيقي)
         // ==========================================
         const skillsData = [
             {
                 title: "نموذج القوائم المالية الثلاث (3-Statement Model)",
                 author: "بواسطة Anthropic",
                 description: "إكمال وتعبئة نماذج مالية من 3 قوائم مع الربط الكامل.",
-                stars: "1.2k",
+                stars: "6", // رقم اللايكات (النجوم) الفعلي
                 githubUrl: "https://github.com/anthropics/financial-services",
                 filename: "3-statement-model.md",
                 codeContent: `إكمال نموذج مالي من 3 قوائم
@@ -201,11 +197,10 @@
 4. بعد بناء الميزانية ← اعرض فحص التوازن (الأصول = الخصوم + حقوق الملكية).
 5. بعد بناء التدفقات النقدية ← اعرض مطابقة النقد.`
             }
-            // يمكنك نسخ البلوك السابق ولصقه هنا لإضافة مهارة جديدة مع تغيير البيانات
         ];
 
         // ==========================================
-        // ⚙️ دوال النظام (لا تحتاج لتعديلها)
+        // دوال النظام
         // ==========================================
 
         function renderSkills() {
@@ -223,7 +218,6 @@
                                 <span>${skill.stars}</span>
                             </div>
                             
-                            <!-- تم تعديل دالة النسخ لتأخذ رابط قيت هب مباشرة -->
                             <button class="btn btn-copy" onclick="event.stopPropagation(); copyGithubLink(this, '${skill.githubUrl}')">نسخ الرابط</button>
                             <button class="btn btn-download" onclick="event.stopPropagation(); downloadContent(${index})">تحميل</button>
                             <a href="${skill.githubUrl}" target="_blank" class="btn btn-github" onclick="event.stopPropagation();">
