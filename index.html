@@ -32,7 +32,13 @@
         }
         .logo-area { display: flex; align-items: center; gap: 15px; }
         .logo-area h1 { margin: 0; color: var(--primary); font-size: 26px; }
-        .avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--border-color); object-fit: cover; background-color: white;}
+        
+        /* شلنا الدائرة بالكامل عشان اللوقو ياخذ راحته */
+        .logo-image { 
+            max-height: 85px; /* كبرت الحجم عشان يبرز */
+            width: auto;
+            object-fit: contain;
+        }
 
         main { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
         
@@ -147,6 +153,7 @@
             line-height: 1.6;
             white-space: pre-wrap;
         }
+        .loading-text { color: #888; font-style: italic; }
     </style>
 </head>
 <body>
@@ -155,8 +162,8 @@
         <div class="logo-area">
             <h1>ArClaudeSkills</h1>
         </div>
-        <!-- تم التأكد من اسم الصورة logo.png -->
-        <img src="logo.png" alt="Abdullah Avatar" class="avatar">
+        <!-- بدون دائرة، حجم مناسب ويبرز التفاصيل -->
+        <img src="logo.png" alt="ArClaudeSkills Logo" class="logo-image">
     </header>
 
     <main>
@@ -169,7 +176,7 @@
 
     <script>
         // ==========================================
-        // إضافة المهارات (النظام سيسحب عدد النجوم تلقائياً من الرابط)
+        // طريقة الرفع السهلة: بس حط الروابط هنا والموقع بيتكفل بالباقي!
         // ==========================================
         const skillsData = [
             {
@@ -178,6 +185,11 @@
                 description: "إكمال وتعبئة نماذج مالية من 3 قوائم مع الربط الكامل.",
                 githubUrl: "https://github.com/anthropics/financial-services",
                 filename: "3-statement-model.md",
+                
+                // إذا عندك رابط الملف الأصلي في قيت هب (Raw URL)، حطه هنا والموقع بيسحب النص لحاله!
+                // إذا تبغى النص يكون مترجم (مثل ما سويناه)، خله مكتوب تحت في codeContent
+                rawFileUrl: "", 
+                
                 codeContent: `إكمال نموذج مالي من 3 قوائم
 قم بإكمال وتعبئة نماذج النماذج المالية المتكاملة مع التأكد من الربط الصحيح بين قائمة الدخل، الميزانية العمومية، وقائمة التدفقات النقدية.
 
@@ -196,6 +208,18 @@
 4. بعد بناء الميزانية ← اعرض فحص التوازن.
 5. بعد بناء التدفقات النقدية ← اعرض مطابقة النقد.`
             }
+            // تقدر تضيف المهارة الثانية كذا مباشرة:
+            /*
+            ,{
+                title: "مهارة جديدة",
+                author: "عبدالله",
+                description: "وصف المهارة",
+                githubUrl: "رابط المستودع",
+                filename: "skill.md",
+                rawFileUrl: "رابط_الملف_Raw_من_قيت_هب",
+                codeContent: ""
+            }
+            */
         ];
 
         // ==========================================
@@ -217,7 +241,6 @@
                                 <span id="stars-count-${index}">...</span>
                             </div>
                             
-                            <!-- ينسخ رابط القيت هب المباشر -->
                             <button class="btn btn-copy" onclick="event.stopPropagation(); copyGithubLink(this, '${skill.githubUrl}')">نسخ الرابط</button>
                             <button class="btn btn-download" onclick="event.stopPropagation(); downloadContent(${index})">تحميل</button>
                             <a href="${skill.githubUrl}" target="_blank" class="btn btn-github" onclick="event.stopPropagation();">
@@ -228,7 +251,7 @@
                     </div>
                     <div class="skill-details">
                         <div class="code-block">
-                            <pre><code>${skill.codeContent}</code></pre>
+                            <pre><code id="code-content-${index}">${skill.rawFileUrl ? '<span class="loading-text">جاري سحب المهارة من قيت هب...</span>' : skill.codeContent}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -236,9 +259,10 @@
 
             attachCardListeners();
             fetchGitHubStars();
+            fetchRawFiles();
         }
 
-        // سحب عدد النجوم برمجياً من قيت هب
+        // سحب عدد النجوم
         function fetchGitHubStars() {
             skillsData.forEach((skill, index) => {
                 const match = skill.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
@@ -250,15 +274,27 @@
                         .then(data => {
                             if (data.stargazers_count !== undefined) {
                                 let stars = data.stargazers_count;
-                                if (stars >= 1000) {
-                                    stars = (stars / 1000).toFixed(1) + 'k';
-                                }
+                                if (stars >= 1000) stars = (stars / 1000).toFixed(1) + 'k';
                                 document.getElementById(`stars-count-${index}`).innerText = stars;
                             }
                         })
-                        .catch(err => {
-                            console.error('خطأ في جلب بيانات قيت هب:', err);
-                            document.getElementById(`stars-count-${index}`).innerText = "N/A";
+                        .catch(() => document.getElementById(`stars-count-${index}`).innerText = "N/A");
+                }
+            });
+        }
+
+        // الرفع السهل: سحب النص من قيت هب مباشرة إذا كان فيه رابط Raw
+        function fetchRawFiles() {
+            skillsData.forEach((skill, index) => {
+                if (skill.rawFileUrl) {
+                    fetch(skill.rawFileUrl)
+                        .then(response => response.text())
+                        .then(text => {
+                            document.getElementById(`code-content-${index}`).innerText = text;
+                            skill.codeContent = text; // تحديث المتغير عشان التحميل يشتغل
+                        })
+                        .catch(() => {
+                            document.getElementById(`code-content-${index}`).innerText = "فشل تحميل المهارة من الرابط المباشر.";
                         });
                 }
             });
@@ -288,15 +324,12 @@
                 btn.innerHTML = "تم ✔";
                 btn.style.backgroundColor = "#4CAF50"; 
                 btn.style.borderColor = "#4CAF50";
-                
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.style.backgroundColor = "";
                     btn.style.borderColor = "";
                 }, 2000);
-            } catch (err) {
-                console.error('فشل النسخ: ', err);
-            }
+            } catch (err) {}
             document.body.removeChild(textArea);
         }
 
@@ -304,7 +337,6 @@
             const skill = skillsData[index];
             const blob = new Blob([skill.codeContent], { type: "text/plain;charset=utf-8" });
             const url = URL.createObjectURL(blob);
-            
             const a = document.createElement("a");
             a.href = url;
             a.download = skill.filename;
