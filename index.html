@@ -22,55 +22,92 @@
             color: var(--text-main);
         }
 
+        /* 
+         * تحسين الهيدر: 
+         * - تقليل الـ padding لتقليل الفراغ.
+         * - ضبط الارتفاع ليكون متناسق ومريح للعين.
+         */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 15px 40px; 
             background-color: var(--card-bg);
             border-bottom: 3px solid var(--border-color);
+            position: sticky; /* يثبت الهيدر فوق يعطي تجربة أفضل */
+            top: 0;
+            z-index: 100;
         }
-        .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-area h1 { margin: 0; color: var(--primary); font-size: 26px; }
         
-        /* شلنا الدائرة بالكامل عشان اللوقو ياخذ راحته */
+        .logo-area { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .logo-area h1 { 
+            margin: 0; 
+            color: var(--primary); 
+            font-size: 22px; /* تصغير بسيط ليتناسق مع الهيدر النحيف */
+        }
+        
+        /* ضبط اللوقو عشان ما يسبب فراغ عمودي كبير */
         .logo-image { 
-            max-height: 85px; /* كبرت الحجم عشان يبرز */
+            height: 55px; /* ارتفاع ثابت يحمي الهيدر من التمدد */
             width: auto;
             object-fit: contain;
         }
 
-        main { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        /* 
+         * تحسين الحاوية الأساسية:
+         * - تقليل الـ margin العلوي اللي كان مسبب "الفراغ القاتل".
+         */
+        main { 
+            max-width: 900px; /* تصغير بسيط لعرض المحتوى لزيادة التركيز */
+            margin: 30px auto; 
+            padding: 0 20px; 
+        }
         
-        .search-container { margin-bottom: 40px; text-align: center; }
+        /* شريط البحث */
+        .search-container { 
+            margin-bottom: 30px; /* تقليل المسافة بين البحث والبطاقات */
+            text-align: center; 
+        }
         .search-bar {
             width: 100%;
             max-width: 600px;
-            padding: 15px 20px;
-            font-size: 18px;
-            border: 3px solid var(--border-color);
+            padding: 14px 20px;
+            font-size: 16px;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
-            box-shadow: 4px 4px 0px var(--border-color);
+            box-shadow: 3px 3px 0px var(--border-color); /* تخفيف الظل ليكون أنعم */
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
         }
-        .search-bar:focus { border-color: var(--primary); }
+        .search-bar:focus { 
+            border-color: var(--primary);
+            box-shadow: 3px 3px 0px var(--primary); 
+        }
 
-        .skills-grid { display: flex; flex-direction: column; gap: 20px; }
+        .skills-grid { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; /* تقليل الفراغ بين البطاقات */
+        }
 
+        /* البطاقات */
         .skill-card {
             background: var(--card-bg);
-            border: 3px solid var(--border-color);
-            box-shadow: 5px 5px 0px var(--border-color);
-            border-radius: 12px;
+            border: 2px solid var(--border-color); /* تنحيف الإطار */
+            box-shadow: 4px 4px 0px var(--border-color);
+            border-radius: 10px;
             padding: 20px;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
             overflow: hidden;
         }
         .skill-card:active { 
             transform: translate(2px, 2px); 
-            box-shadow: 3px 3px 0px var(--border-color); 
+            box-shadow: 2px 2px 0px var(--border-color); 
         }
         
         .skill-header {
@@ -81,52 +118,64 @@
             gap: 15px;
         }
         .skill-title-group { flex: 1; min-width: 250px; }
-        .skill-title-group h3 { margin: 0 0 5px 0; color: var(--text-main); font-size: 18px;}
-        .skill-title-group p { margin: 0; color: var(--text-muted); font-size: 14px; }
+        .skill-title-group h3 { 
+            margin: 0 0 4px 0; 
+            color: var(--text-main); 
+            font-size: 17px;
+        }
+        .skill-title-group p { 
+            margin: 0; 
+            color: var(--text-muted); 
+            font-size: 13px;
+            line-height: 1.4;
+        }
         
         .skill-actions { 
             display: flex; 
-            gap: 10px; 
+            gap: 8px; /* تقليل الفراغ بين الأزرار */
             align-items: center; 
         }
         
+        /* إحصائيات قيت هب */
         .github-stats {
-            background-color: rgba(177, 173, 161, 0.25);
+            background-color: rgba(177, 173, 161, 0.15); /* تفتيح اللون ليكون أنعم */
             color: var(--text-muted);
             padding: 6px 10px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
-        .github-stats svg { width: 16px; height: 16px; fill: currentColor; }
+        .github-stats svg { width: 14px; height: 14px; fill: currentColor; }
 
+        /* الأزرار */
         .btn {
-            padding: 8px 16px;
+            padding: 8px 14px;
             border: 2px solid var(--border-color);
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
         }
-        .btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .btn svg { width: 14px; height: 14px; fill: currentColor; }
         
         .btn-copy { background-color: var(--primary); color: white; border-color: var(--primary); }
-        .btn-copy:hover { opacity: 0.9; }
+        .btn-copy:hover { background-color: #a85132; border-color: #a85132; }
         
         .btn-download { background-color: white; color: var(--text-main); }
         .btn-download:hover { background-color: var(--bg); }
         
         .btn-github { background-color: #24292e; color: white; border-color: #24292e; }
-        .btn-github:hover { opacity: 0.9; }
+        .btn-github:hover { background-color: #1b1f23; border-color: #1b1f23; }
 
+        /* تفاصيل البطاقة */
         .skill-details {
             max-height: 0;
             opacity: 0;
@@ -135,9 +184,9 @@
         .skill-card.active .skill-details {
             max-height: 5000px;
             opacity: 1;
-            margin-top: 20px;
-            border-top: 2px dashed var(--border-color);
-            padding-top: 20px;
+            margin-top: 15px; /* تقليل الفراغ الداخلي */
+            border-top: 1px dashed var(--border-color); /* خط أنحف */
+            padding-top: 15px;
         }
 
         pre {
@@ -149,9 +198,10 @@
             direction: rtl;
             text-align: right;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 13.5px;
+            line-height: 1.5;
             white-space: pre-wrap;
+            margin: 0; /* منع الفراغ الإضافي تحت الكود */
         }
         .loading-text { color: #888; font-style: italic; }
     </style>
@@ -162,7 +212,6 @@
         <div class="logo-area">
             <h1>ArClaudeSkills</h1>
         </div>
-        <!-- بدون دائرة، حجم مناسب ويبرز التفاصيل -->
         <img src="logo.png" alt="ArClaudeSkills Logo" class="logo-image">
     </header>
 
@@ -176,7 +225,7 @@
 
     <script>
         // ==========================================
-        // طريقة الرفع السهلة: بس حط الروابط هنا والموقع بيتكفل بالباقي!
+        // بيانات المهارات
         // ==========================================
         const skillsData = [
             {
@@ -185,11 +234,7 @@
                 description: "إكمال وتعبئة نماذج مالية من 3 قوائم مع الربط الكامل.",
                 githubUrl: "https://github.com/anthropics/financial-services",
                 filename: "3-statement-model.md",
-                
-                // إذا عندك رابط الملف الأصلي في قيت هب (Raw URL)، حطه هنا والموقع بيسحب النص لحاله!
-                // إذا تبغى النص يكون مترجم (مثل ما سويناه)، خله مكتوب تحت في codeContent
                 rawFileUrl: "", 
-                
                 codeContent: `إكمال نموذج مالي من 3 قوائم
 قم بإكمال وتعبئة نماذج النماذج المالية المتكاملة مع التأكد من الربط الصحيح بين قائمة الدخل، الميزانية العمومية، وقائمة التدفقات النقدية.
 
@@ -207,19 +252,16 @@
 3. بعد بناء توقعات الدخل ← شغل فحوصات الإجماليات الفرعية.
 4. بعد بناء الميزانية ← اعرض فحص التوازن.
 5. بعد بناء التدفقات النقدية ← اعرض مطابقة النقد.`
-            }
-            // تقدر تضيف المهارة الثانية كذا مباشرة:
-            /*
-            ,{
-                title: "مهارة جديدة",
-                author: "عبدالله",
-                description: "وصف المهارة",
-                githubUrl: "رابط المستودع",
-                filename: "skill.md",
-                rawFileUrl: "رابط_الملف_Raw_من_قيت_هب",
+            },
+            {
+                title: "UI/UX Pro Max",
+                author: "بواسطة NextLevelBuilder",
+                description: "مهندس تصميم UI/UX متقدم لبناء واجهات احترافية عبر مختلف المنصات.",
+                githubUrl: "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+                filename: "ui-ux-pro-max.md",
+                rawFileUrl: "https://raw.githubusercontent.com/nextlevelbuilder/ui-ux-pro-max-skill/main/CLAUDE.md",
                 codeContent: ""
             }
-            */
         ];
 
         // ==========================================
@@ -262,7 +304,6 @@
             fetchRawFiles();
         }
 
-        // سحب عدد النجوم
         function fetchGitHubStars() {
             skillsData.forEach((skill, index) => {
                 const match = skill.githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
@@ -283,7 +324,6 @@
             });
         }
 
-        // الرفع السهل: سحب النص من قيت هب مباشرة إذا كان فيه رابط Raw
         function fetchRawFiles() {
             skillsData.forEach((skill, index) => {
                 if (skill.rawFileUrl) {
@@ -291,7 +331,7 @@
                         .then(response => response.text())
                         .then(text => {
                             document.getElementById(`code-content-${index}`).innerText = text;
-                            skill.codeContent = text; // تحديث المتغير عشان التحميل يشتغل
+                            skill.codeContent = text; 
                         })
                         .catch(() => {
                             document.getElementById(`code-content-${index}`).innerText = "فشل تحميل المهارة من الرابط المباشر.";
