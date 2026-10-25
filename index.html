@@ -30,6 +30,11 @@
             --code-text: #d4d4d4;
         }
         
+        /* إعادة تعيين أساسية لمنع الـ Scroll العرضي */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -37,6 +42,7 @@
             padding: 0;
             color: var(--text-main);
             transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden; /* يمنع الحركة يمين ويسار بالغلط */
         }
 
         header {
@@ -95,6 +101,7 @@
         }
 
         main { 
+            width: 100%;
             max-width: 900px; 
             margin: 30px auto; 
             padding: 0 20px; 
@@ -140,6 +147,7 @@
             cursor: pointer;
             transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.3s ease, border-color 0.3s ease;
             overflow: hidden;
+            width: 100%;
         }
         .skill-card:active { 
             transform: translate(2px, 2px); 
@@ -153,7 +161,13 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        .skill-title-group { flex: 1; min-width: 250px; }
+        
+        /* محاذاة صارمة لليمين */
+        .skill-title-group { 
+            flex: 1 1 100%; 
+            min-width: 250px; 
+            text-align: right;
+        }
         .skill-title-group h3 { 
             margin: 0 0 4px 0; 
             color: var(--text-main); 
@@ -170,6 +184,7 @@
             display: flex; 
             gap: 8px; 
             align-items: center; 
+            flex-wrap: wrap; 
         }
         
         .github-stats {
@@ -180,7 +195,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
         }
         .github-stats svg { width: 14px; height: 14px; fill: currentColor; }
@@ -238,20 +253,24 @@
             margin: 0; 
             border: 1px solid var(--border-color);
         }
-        .loading-text { color: var(--text-muted); font-style: italic; }
 
         /* ========================================= */
         /* استجابة الجوال (Mobile Responsiveness)    */
         /* ========================================= */
+        @media (min-width: 769px) {
+            .skill-title-group { flex: 1; }
+            .skill-actions { flex: 0 0 auto; justify-content: flex-end; }
+        }
+
         @media (max-width: 768px) {
             header {
-                padding: 12px 20px;
+                padding: 12px 15px; /* تقليل الحواف الجانبية */
             }
             .logo-area h1 {
-                font-size: 18px; /* تصغير الخط قليلاً */
+                font-size: 18px; 
             }
             .logo-image {
-                height: 40px; /* تصغير اللوقو ليناسب الشاشة */
+                height: 40px; 
             }
             .theme-toggle {
                 width: 35px;
@@ -260,39 +279,55 @@
             }
             main {
                 margin: 20px auto;
-                padding: 0 15px;
-            }
-            .skill-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            .skill-title-group {
-                width: 100%;
-            }
-            .skill-actions {
-                width: 100%;
-                flex-wrap: wrap; /* السماح بالتفاف الأزرار */
-                justify-content: flex-start;
-            }
-            /* جعل الأزرار تتمدد وتأخذ مساحة لتسهيل الضغط بالجوال */
-            .btn {
-                flex: 1 1 30%; 
-                padding: 10px 8px;
-                font-size: 12px;
-            }
-            .github-stats {
-                flex: 1 1 100%;
-                justify-content: center;
-                margin-bottom: 5px;
-                padding: 8px;
+                padding: 0 10px; /* تقليل الفراغ الجانبي للمحتوى عشان البطاقات تاخذ راحتها */
             }
             .search-bar {
-                padding: 12px 15px;
-                font-size: 14px;
+                width: calc(100% - 10px); /* ضمان عدم خروج البحث عن الشاشة */
             }
+            
+            .skill-card {
+                padding: 15px; /* تقليل البادنج الداخلي في الجوال */
+            }
+            
+            .skill-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            
+            .skill-title-group {
+                width: 100%;
+                text-align: right; 
+            }
+            
+            .skill-actions {
+                width: 100%;
+                display: grid; 
+                grid-template-columns: 1fr 1fr; 
+                gap: 8px;
+            }
+            
+            /* إحصائيات قيت هب: تاخذ السطر الأول فوق الأزرار ومحاذاة للوسط */
+            .github-stats {
+                grid-column: 1 / -1; 
+                justify-content: center;
+                padding: 10px;
+                font-size: 14px; /* تكبير بسيط لرقم اللايكات ليكون واضح في الجوال */
+            }
+            
+            .btn {
+                padding: 10px 5px; /* تعديل مساحة الضغط */
+                font-size: 12px;
+                width: 100%;
+            }
+            
+            .btn-github {
+                grid-column: 1 / -1;
+            }
+            
             pre {
-                font-size: 12px; /* تصغير حجم خط الكود قليلاً ليكون مقروء أكثر */
+                font-size: 12px; 
+                padding: 12px;
             }
         }
     </style>
@@ -307,11 +342,9 @@
         <div class="header-actions">
             <!-- زر الوضع الداكن/الفاتح -->
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="تبديل الوضع">
-                <!-- أيقونة القمر -->
                 <svg id="moonIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
-                <!-- أيقونة الشمس -->
                 <svg id="sunIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -967,5 +1000,3 @@
         });
     </script>
 </body>
-</html>
-,path:ui-ux-pro-max/index.html,skill_name:user:ui-ux-pro-max}
