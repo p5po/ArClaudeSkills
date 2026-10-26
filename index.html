@@ -43,6 +43,9 @@
             color: var(--text-main);
             transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden; /* يمنع الحركة يمين ويسار بالغلط */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -104,7 +107,8 @@
             width: 100%;
             max-width: 900px; 
             margin: 30px auto; 
-            padding: 0 20px; 
+            padding: 0 20px;
+            flex: 1; /* لجعل المحتوى يتمدد ويدفع الفوتر للأسفل */
         }
         
         .search-container { 
@@ -197,7 +201,7 @@
             gap: 5px;
             font-size: 13px;
             font-weight: bold;
-            min-width: 65px; /* Ensures minimum width even while loading */
+            min-width: 65px;
             justify-content: center;
         }
         .github-stats svg { width: 14px; height: 14px; fill: currentColor; }
@@ -257,6 +261,44 @@
         }
 
         /* ========================================= */
+        /* تنسيقات الفوتر (حقوق النشر) الجديدة       */
+        /* ========================================= */
+        footer {
+            background-color: var(--card-bg);
+            border-top: 3px solid var(--border-color);
+            padding: 24px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14.5px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            margin-top: 40px;
+        }
+        
+        footer p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+
+        footer a:hover {
+            color: #a85132;
+            text-decoration: underline;
+            transform: translateY(-2px);
+        }
+
+        /* ========================================= */
         /* استجابة الجوال (Mobile Responsiveness)    */
         /* ========================================= */
         @media (min-width: 769px) {
@@ -265,72 +307,21 @@
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 12px 15px; /* تقليل الحواف الجانبية */
-            }
-            .logo-area h1 {
-                font-size: 18px; 
-            }
-            .logo-image {
-                height: 40px; 
-            }
-            .theme-toggle {
-                width: 35px;
-                height: 35px;
-                margin-right: 10px;
-            }
-            main {
-                margin: 20px auto;
-                padding: 0 10px; /* تقليل الفراغ الجانبي للمحتوى عشان البطاقات تاخذ راحتها */
-            }
-            .search-bar {
-                width: calc(100% - 10px); /* ضمان عدم خروج البحث عن الشاشة */
-            }
-            
-            .skill-card {
-                padding: 15px; /* تقليل البادنج الداخلي في الجوال */
-            }
-            
-            .skill-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-            
-            .skill-title-group {
-                width: 100%;
-                text-align: right; 
-            }
-            
-            .skill-actions {
-                width: 100%;
-                display: grid; 
-                grid-template-columns: 1fr 1fr; 
-                gap: 8px;
-            }
-            
-            /* إحصائيات قيت هب: تاخذ السطر الأول فوق الأزرار ومحاذاة للوسط */
-            .github-stats {
-                grid-column: 1 / -1; 
-                justify-content: center;
-                padding: 10px;
-                font-size: 14px; /* تكبير بسيط لرقم اللايكات ليكون واضح في الجوال */
-            }
-            
-            .btn {
-                padding: 10px 5px; /* تعديل مساحة الضغط */
-                font-size: 12px;
-                width: 100%;
-            }
-            
-            .btn-github {
-                grid-column: 1 / -1;
-            }
-            
-            pre {
-                font-size: 12px; 
-                padding: 12px;
-            }
+            header { padding: 12px 15px; }
+            .logo-area h1 { font-size: 18px; }
+            .logo-image { height: 40px; }
+            .theme-toggle { width: 35px; height: 35px; margin-right: 10px; }
+            main { margin: 20px auto; padding: 0 10px; }
+            .search-bar { width: calc(100% - 10px); }
+            .skill-card { padding: 15px; }
+            .skill-header { flex-direction: column; align-items: stretch; gap: 12px; }
+            .skill-title-group { width: 100%; text-align: right; }
+            .skill-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+            .github-stats { grid-column: 1 / -1; justify-content: center; padding: 10px; font-size: 14px; }
+            .btn { padding: 10px 5px; font-size: 12px; width: 100%; }
+            .btn-github { grid-column: 1 / -1; }
+            pre { font-size: 12px; padding: 12px; }
+            footer { padding: 20px 15px; font-size: 13.5px; }
         }
     </style>
 </head>
@@ -370,11 +361,12 @@
 
         <div class="skills-grid" id="skillsGrid"></div>
     </main>
-     </main>
     
     <!-- الفوتر (حقوق النشر) -->
     <footer>
-        &copy; 2026 <a href="https://abdullahbintaleb-portfolio.vercel.app/" target="_blank">Abdullah Bin Taleb</a>
+        <p>جميع الحقوق محفوظة &copy; 2026 | صُنع بواسطة 
+            <a href="https://abdullahbintaleb-portfolio.vercel.app/" target="_blank">Abdullah Bin Taleb</a>
+        </p>
     </footer>
 
     <script>
@@ -432,7 +424,7 @@
 
 التحقق خطوة بخطوة مع المستخدم
 1. خريطة النموذج: اعرض الأوراق التي حددتها وتأكد من المستخدم قبل التعديل.
-2. البيانات التاريخية: اعرض الكتلة التاريخية وتأكد من مطابقتها للمصدر.
+​2. البيانات التاريخية: اعرض الكتلة التاريخية وتأكد من مطابقتها للمصدر.
 3. قائمة الدخل (IS): اعرض الإجماليات الفرعية وقائمة الدخل المتوقعة وتأكد قبل الميزانية.
 4. الميزانية العمومية (BS): اعرض فحص التوازن (الأصول = الخصوم + حقوق الملكية) وتأكد قبل التدفقات.
 5. التدفقات النقدية (CF): اعرض مطابقة النقد (نقد التدفقات = نقد الميزانية) وتأكد قبل الإنهاء.
@@ -483,7 +475,7 @@
 
 خطوات العمل عند طلب تصميم أو تعديل واجهة
 1. التحليل والاستكشاف: افهم متطلبات المشروع، نوع المنتج (SaaS, E-commerce, Fintech...)، والمكتبات المستخدمة حالياً.
-2. تحديد الهوية البصرية: اختر الألوان والخطوط المناسبة لنوع المنتج (مثلاً: أزرق للثقة في البنوك، ألوان حيوية للتطبيقات الإبداعية).
+​2. تحديد الهوية البصرية: اختر الألوان والخطوط المناسبة لنوع المنتج (مثلاً: أزرق للثقة في البنوك، ألوان حيوية للتطبيقات الإبداعية).
 3. التنفيذ خطوة بخطوة: ابدأ بالهيكل الأساسي (Layout)، ثم المكونات الكبيرة، ثم التفاصيل الدقيقة (Micro-interactions).
 4. المراجعة (Pre-delivery checks): تأكد من عدم وجود أخطاء UX شائعة، وتحقق من تناسق التصميم مع الوضعين الفاتح والداكن (Light/Dark mode) إذا طُلب ذلك.`
             },
